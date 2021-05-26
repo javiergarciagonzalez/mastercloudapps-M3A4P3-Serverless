@@ -1,0 +1,324 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'lambda-books
+
+  '
+Globals:
+  Function:
+    Timeout: 10
+Resources:
+  GetAllBooksFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: GetAllBooksFunction
+      Handler: app.books.getAllBooksHandler
+      Runtime: nodejs14.x
+      Events:
+        GetAllBooks:
+          Type: Api
+          Properties:
+            Path: /api/v1/books/
+            Method: GET
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: BooksTable
+  GetBookFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: GetBookFunction
+      Handler: app.books.getBookHandler
+      Runtime: nodejs14.x
+      Events:
+        GetlBook:
+          Type: Api
+          Properties:
+            Path: /api/v1/books/{bookId}
+            Method: GET
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: BooksTable
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: CommentsTable
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: UsersTable
+  CreateBookFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: CreateBookFunction
+      Handler: app.books.createBookHandler
+      Runtime: nodejs14.x
+      Events:
+        CreateBook:
+          Type: Api
+          Properties:
+            Path: /api/v1/books/
+            Method: POST
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: BooksTable
+  UpdateBookFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: UpdateBookFunction
+      Handler: app.books.updateBookHandler
+      Runtime: nodejs14.x
+      Events:
+        UpdateBook:
+          Type: Api
+          Properties:
+            Path: /api/v1/books/
+            Method: PATCH
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: BooksTable
+  DeleteBookFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: DeleteBookFunction
+      Handler: app.books.deleteBookHandler
+      Runtime: nodejs14.x
+      Events:
+        DeleteBook:
+          Type: Api
+          Properties:
+            Path: /api/v1/books/{bookId}
+            Method: DELETE
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: BooksTable
+  GetAllUsersFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: GetAllUsersFunction
+      Handler: app.users.getAllUsersHandler
+      Runtime: nodejs14.x
+      Events:
+        GetAllUsers:
+          Type: Api
+          Properties:
+            Path: /api/v1/users/
+            Method: GET
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: UsersTable
+  GetUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: GetUserFunction
+      Handler: app.users.getUserHandler
+      Runtime: nodejs14.x
+      Events:
+        GetUser:
+          Type: Api
+          Properties:
+            Path: /api/v1/users/{userId}
+            Method: GET
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: UsersTable
+  CreateUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: CreateUserFunction
+      Handler: app.users.createUserHandler
+      Runtime: nodejs14.x
+      Events:
+        CreateUser:
+          Type: Api
+          Properties:
+            Path: /api/v1/users/
+            Method: POST
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: UsersTable
+  UpdateUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: UpdateUserFunction
+      Handler: app.users.updateUserHandler
+      Runtime: nodejs14.x
+      Events:
+        UpdateUser:
+          Type: Api
+          Properties:
+            Path: /api/v1/users/{userId}
+            Method: PATCH
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: UsersTable
+  DeleteUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: DeleteUserFunction
+      Handler: app.users.deleteUserHandler
+      Runtime: nodejs14.x
+      Events:
+        DeleteUser:
+          Type: Api
+          Properties:
+            Path: /api/v1/users/{userId}
+            Method: DELETE
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: UsersTable
+  GetUserCommentsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: GetUserCommentsFunction
+      Handler: app.comments.getUserCommentsHandler
+      Runtime: nodejs14.x
+      Events:
+        GetUserComments:
+          Type: Api
+          Properties:
+            Path: /api/v1/users/{userId}/comments/
+            Method: GET
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: CommentsTable
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: UsersTable
+  GetBookCommentsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: GetBookCommentsFunction
+      Handler: app.comments.getBookCommentsHandler
+      Runtime: nodejs14.x
+      Events:
+        GetUserComments:
+          Type: Api
+          Properties:
+            Path: /api/v1/books/{bookId}/comments/
+            Method: GET
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: CommentsTable
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: UsersTable
+  CreateCommentFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: CreateCommentFunction
+      Handler: app.comments.createCommentHandler
+      Runtime: nodejs14.x
+      Events:
+        CreateComment:
+          Type: Api
+          Properties:
+            Path: /api/v1/books/{bookId}/comments/
+            Method: POST
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: BooksTable
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: CommentsTable
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: UsersTable
+  UpdateCommentFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: UpdateCommentFunction
+      Handler: app.comments.updateCommentHandler
+      Runtime: nodejs14.x
+      Events:
+        UpdateComment:
+          Type: Api
+          Properties:
+            Path: /api/v1/books/{bookId}/comments/
+            Method: PATCH
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: BooksTable
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: CommentsTable
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: UsersTable
+  DeleteCommentFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: DeleteCommentFunction
+      Handler: app.comments.deleteCommentHandler
+      Runtime: nodejs14.x
+      Events:
+        DeleteComment:
+          Type: Api
+          Properties:
+            Path: /api/v1/books/{bookId}/comments/{commentId}
+            Method: DELETE
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: BooksTable
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: CommentsTable
+  BooksTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: books
+      AttributeDefinitions:
+      - AttributeName: id
+        AttributeType: S
+      KeySchema:
+      - AttributeName: id
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+  UsersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: users
+      AttributeDefinitions:
+      - AttributeName: id
+        AttributeType: S
+      KeySchema:
+      - AttributeName: id
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+  CommentsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: comments
+      AttributeDefinitions:
+      - AttributeName: id
+        AttributeType: S
+      KeySchema:
+      - AttributeName: id
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+Outputs:
+  UsersApi:
+    Description: Users endpoints
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/api/v1/users/
+  BooksApi:
+    Description: Books endpoints
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/api/v1/books/

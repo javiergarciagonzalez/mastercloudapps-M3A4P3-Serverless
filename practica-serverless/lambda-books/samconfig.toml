@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "lambda-books"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1b3e2cfi9hzd9"
+s3_prefix = "lambda-books"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
